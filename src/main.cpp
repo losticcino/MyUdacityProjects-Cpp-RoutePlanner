@@ -52,9 +52,26 @@ int main(int argc, const char **argv)
             osm_data = std::move(*data);
     }
     
-    // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
+    // TODOne 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below in place of 10, 10, 90, 90.
+
+    float fStartX = 0.0f;
+    float fStartY = 0.0f;
+    float fEndX = 0.0f;
+    float fEndY = 0.0f;
+
+    std::cout << "What is your starting X position? ";
+    std::cin >> fStartX;
+
+    std::cout << "What is your starting Y position? ";
+    std::cin >> fStartY;
+
+    std::cout << "What is your destination X position? ";
+    std::cin >> fEndX;
+
+    std::cout << "What is your destination Y position? ";
+    std::cin >> fEndY;
 
     // Build Model.
     RouteModel model{osm_data};
