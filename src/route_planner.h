@@ -28,6 +28,8 @@ class RoutePlanner {
 
     float distance = 0.0f;
     RouteModel &m_Model;
+
+    bool CompareScore(RouteModel::Node *FirstNode, RouteModel::Node *SecondNode);
 };
 
 #endif
