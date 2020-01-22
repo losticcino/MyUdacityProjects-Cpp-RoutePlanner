@@ -39,15 +39,15 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
     current_node->FindNeighbors();
     float fCurrentG = current_node->g_value;
 
-    for (RouteModel::Node &neighbor : current_node->neighbors) {
+    for (RouteModel::Node *neighbor : current_node->neighbors) {
 
         if (!neighbor->visited) {
 
             neighbor->parent = current_node;
-            neighbor->h_value = CalculateHValue(*node);
+            neighbor->h_value = CalculateHValue(neighbor);
             neighbor->g_value = fCurrentG + current_node->distance(*neighbor);
             open_list.push_back(neighbor);
-            neighbor.visited = true;
+            neighbor->visited = true;
         }
     }
 }
@@ -60,10 +60,15 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
+bool CompareScore(RouteModel::Node *FirstNode, RouteModel::Node *SecondNode){
+
+    return ((FirstNode->g_value + FirstNode->h_value) > (SecondNode->g_value + SecondNode->h_value));
+}
+
 RouteModel::Node *RoutePlanner::NextNode() {
 
-    std::sort(open_list.begin(), open_list.end(), CompareScore)
-    RouteModel::Node node = open_list.back();
+    std::sort(open_list.begin(), open_list.end(), CompareScore);
+    RouteModel::Node *node = open_list.back();
     open_list.pop_back();
     return node;
 }
@@ -118,10 +123,4 @@ void RoutePlanner::AStarSearch() {
         }
         AddNeighbors(current_node);
     }
-}
-
-bool CompareScore(RouteModel::Node *FirstNode, RouteModel::Node *SecondNode){
-
-    return ((FirstNode->g_value + FirstNode->h_value) < (SecondNode->g_value + SecondNode->h_value));
-    //I returned the inverse of the lesson, so that list operations can pop_back for an o(1) operation.
 }
